@@ -2232,16 +2232,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 			Slider.Name = SliderSettings.Name or SliderSettings.Title
 			Slider.Title.Text = SliderSettings.Name or SliderSettings.Title
 			Slider.Visible = true
-			Tab.Elements[SliderSettings.Name or SliderSettings.Name] = {
-				type = 'slider',
-				section = SliderSettings.SectionParent,
-				element = Slider
-			}
-			if SliderSettings.SectionParent then
-				Slider.Parent = SliderSettings.SectionParent.Holder
-			else
-				Slider.Parent = TabPage
-			end
+			Slider.Parent = TabPage
 
 			Slider.BackgroundTransparency = 1
 			Slider.UIStroke.Transparency = 1
@@ -2365,31 +2356,6 @@ function RayfieldLibrary:CreateWindow(Settings)
 				end
 				SliderSettings.CurrentValue = NewVal
 				SaveConfiguration()
-			end
-			function SliderSettings:Destroy()
-				Slider:Destroy()
-			end
-			function SliderSettings:Lock(Reason)
-				if SliderSettings.Locked then return end
-				SliderSettings.Locked = true
-				Slider.Lock.Reason.Text = Reason or 'Locked'
-				TweenService:Create(Slider.Lock,TweenInfo.new(0.4,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),{BackgroundTransparency = 0}):Play()
-				TweenService:Create(Slider.Lock.Reason,TweenInfo.new(0.4,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),{TextTransparency = 0}):Play()
-				wait(0.2)
-				if not SliderSettings.Locked then return end --no icon bug
-				TweenService:Create(Slider.Lock.Reason.Icon,TweenInfo.new(0.4,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),{ImageTransparency = 0}):Play()
-			end
-			function SliderSettings:Unlock()
-				if not SliderSettings.Locked then return end
-				SliderSettings.Locked = false
-				wait(0.2)
-				TweenService:Create(Slider.Lock.Reason.Icon,TweenInfo.new(0.4,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),{ImageTransparency = 1}):Play()
-				if SliderSettings.Locked then return end --no icon bug
-				TweenService:Create(Slider.Lock,TweenInfo.new(0.4,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),{BackgroundTransparency = 1}):Play()
-				TweenService:Create(Slider.Lock.Reason,TweenInfo.new(0.4,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),{TextTransparency = 1}):Play()
-			end
-			function SliderSettings:Visible(bool)
-				Slider.Visible = bool
 			end
 			if Settings.ConfigurationSaving then
 				if Settings.ConfigurationSaving.Enabled and SliderSettings.Flag then
