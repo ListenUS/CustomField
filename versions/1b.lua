@@ -2268,6 +2268,18 @@ function RayfieldLibrary:CreateWindow(Settings)
 			Slider.MouseLeave:Connect(function()
 				TweenService:Create(Slider, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = SelectedTheme.ElementBackground}):Play()
 			end)
+			Slider.Main.Interact.MouseButton1Down:Connect(function(X)
+				UpdateSlider(X)
+				Dragging = true 
+			end)
+			Slider.Main.Interact.MouseButton1Up:Connect(function(X) 
+				Dragging = false 
+			end)
+			Slider.Main.Interact.MouseMoved:Connect(function(X)
+				if Dragging then
+					UpdateSlider(X)
+				end
+			end)
 			local function UpdateSlider(X)
 				local Current = Slider.Main.Progress.AbsolutePosition.X + Slider.Main.Progress.AbsoluteSize.X
 				local Start = Current
@@ -2328,21 +2340,6 @@ function RayfieldLibrary:CreateWindow(Settings)
 					end
 				end)
 			end
-			Slider.Main.Interact.MouseButton1Down:Connect(function(X)
-				if not SliderSettings.Locked then 
-					UpdateSlider(X)
-					Dragging = true 
-				end 
-			end)
-			Slider.Main.Interact.MouseButton1Up:Connect(function(X) 
-				Dragging = false 
-			end)
-			Slider.Main.Interact.MouseMoved:Connect(function(X)
-				if SliderSettings.Locked then return end
-				if Dragging then
-					UpdateSlider(X)
-				end
-			end)
 
 			function SliderSettings:Set(NewVal)
 				TweenService:Create(Slider.Main.Progress, TweenInfo.new(0.45, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, Slider.Main.AbsoluteSize.X * ((NewVal + SliderSettings.Range[1]) / (SliderSettings.Range[2] - SliderSettings.Range[1])) > 5 and Slider.Main.AbsoluteSize.X * (NewVal / (SliderSettings.Range[2] - SliderSettings.Range[1])) or 5, 1, 0)}):Play()
